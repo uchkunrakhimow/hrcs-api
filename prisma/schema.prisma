@@ -1,0 +1,189 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Language {
+  RU
+  UZ
+}
+
+enum Type {
+  persona
+}
+
+enum Status {
+  finished
+  started
+  not_started
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]
+  assignments Assignment[]
+  candidates  AssignmentCandidate[]
+}
+
+model User {
+  id             String        @id @default(uuid())
+  email          String        @unique
+  password       String
+  name           String
+  role           Role          @default(USER)
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+  @@index([role])
+  @@index([name])
+}
+
+model Assignment {
+  id                    String               @id @default(uuid())
+  code                  String               @unique @default(uuid())
+  assignmentCandidate   AssignmentCandidate? @relation(fields: [assignmentCandidateId], references: [id])
+  assignmentCandidateId String?
+  assignmentTest        AssignmentTest?      @relation(fields: [assignmentTestId], references: [id])
+  assignmentTestId      String?
+  folder                Organization?        @relation(fields: [folderId], references: [id])
+  folderId              String?
+  isArchive             Boolean              @default(false)
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+
+  candidateAnswers CandidateAnswer[]
+
+  @@index([assignmentCandidateId])
+  @@index([assignmentTestId])
+  @@index([folderId])
+  @@index([isArchive])
+}
+
+model AssignmentCandidate {
+  id          String        @id @default(uuid())
+  fullname    String
+  age         Int?
+  gender      Gender?
+  company     Organization? @relation(fields: [companyId], references: [id])
+  companyId   String?
+  phone       String?
+  telegram    String?
+  email       String?
+  city        String?
+  countryCode String?
+  link        String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  assignments Assignment[]
+
+  @@index([companyId])
+  @@index([gender])
+  @@index([city])
+  @@index([countryCode])
+  @@index([email])
+  @@index([phone])
+  @@index([telegram])
+}
+
+model AssignmentCandidateTest {
+  id          String   @id @default(uuid())
+  type        Type
+  name        String
+  description String?
+  language    Language @default(RU)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  assignmentTests AssignmentTest[]
+  questions       Question[]
+}
+
+model AssignmentTest {
+  id          String                   @id @default(uuid())
+  test        AssignmentCandidateTest? @relation(fields: [testId], references: [id])
+  testId      String?
+  sendDate    DateTime?
+  status      Status?
+  count       Int?
+  markedCount Int?
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
+
+  assignments Assignment[]
+}
+
+model Answer {
+  id         String    @id @default(uuid())
+  text       String
+  question   Question? @relation(fields: [questionId], references: [id])
+  questionId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  candidateAnswers CandidateAnswer[]
+
+  @@index([questionId])
+}
+
+model CandidateAnswer {
+  id String @id @default(uuid())
+
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId String
+
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+
+  answer   Answer @relation(fields: [answerId], references: [id])
+  answerId String
+
+  percents Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([assignmentId, questionId])
+  @@index([assignmentId])
+  @@index([questionId])
+  @@index([answerId])
+}
+
+model Question {
+  id        String                   @id @default(uuid())
+  text      String
+  number    Int
+  test      AssignmentCandidateTest? @relation(fields: [testId], references: [id])
+  testId    String?
+  createdAt DateTime                 @default(now())
+  updatedAt DateTime                 @updatedAt
+
+  answers          Answer[]
+  candidateAnswers CandidateAnswer[]
+
+  @@index([testId])
+}

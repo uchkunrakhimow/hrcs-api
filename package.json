@@ -1,0 +1,37 @@
+{
+  "name": "hrcs-api",
+  "description": "Open-source HR candidate screening API built with Bun, Elysia, Prisma, and PostgreSQL.",
+  "license": "MIT",
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uchkunrakhimow/hrcs-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/uchkunrakhimow/hrcs-api/issues"
+  },
+  "homepage": "https://github.com/uchkunrakhimow/hrcs-api#readme",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bunx prisma generate && bun build --compile --minify-whitespace --minify-syntax --outfile server src/index.ts"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.4.0",
+    "@elysiajs/jwt": "^1.4.0",
+    "@prisma/client": "^6.16.2",
+    "bcryptjs": "^3.0.2",
+    "elysia": "1.4.8",
+    "nodemailer": "^7.0.6",
+    "pino": "^9.12.0",
+    "prismabox": "^1.1.25",
+    "puppeteer": "^24.22.3"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^7.0.1",
+    "pino-pretty": "^13.1.1",
+    "prisma": "^6.16.2",
+    "bun-types": "latest"
+  },
+  "module": "src/index.js"
+}
