@@ -92,7 +92,6 @@ Authorization: Bearer <jwt>
 
 - `bun run dev` – Start dev server with watch
 - `bun run build` – Generate Prisma client and build binary
-- `bun run seed` – Truncate and seed demo data
 
 ## Project Structure
 
