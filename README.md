@@ -1,102 +1,96 @@
-<h1 align="center">HRCS API</h1>
+<div align="center">
 
-<p align="center">
-  <a href="https://bun.sh"><img src="https://img.shields.io/badge/Runtime-Bun-000?logo=bun&logoColor=fff" alt="Bun" /></a>
-  <a href="https://elysiajs.com"><img src="https://img.shields.io/badge/Framework-Elysia-0ea5e9" alt="Elysia" /></a>
-  <a href="https://www.prisma.io"><img src="https://img.shields.io/badge/ORM-Prisma-2d3748?logo=prisma" alt="Prisma" /></a>
-  <a href="https://www.postgresql.org"><img src="https://img.shields.io/badge/DB-PostgreSQL-316192?logo=postgresql&logoColor=fff" alt="PostgreSQL" /></a>
-  <img src="https://img.shields.io/badge/TypeScript-Strict-blue" alt="TypeScript Strict" />
-  <img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT" />
-  <img src="https://img.shields.io/badge/Status-Active%20Development-success" alt="Project Status" />
-</p>
+# 🎯 HRCS API
 
-<p align="center">
-  HR candidate screening REST API — users, organizations, assignments, tests, and results.
-</p>
+**HR candidate screening REST API built with Bun and Elysia.js**
 
----
+_Complete platform for managing users, organizations, assignments, tests, and results_
 
-## Table of Contents
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Bun](https://img.shields.io/badge/Bun-1.2.22+-black.svg)](https://bun.sh/)
+[![Elysia.js](https://img.shields.io/badge/Elysia.js-Latest-blue.svg)](https://elysiajs.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-orange.svg)](https://postgresql.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue.svg)](https://typescriptlang.org/)
 
-- **Overview**
-- **Features**
-- **Architecture**
-- **Requirements**
-- **Getting Started**
-  - Install
-  - Configure environment
-  - Database setup
-  - Run locally
-- **API Overview**
-- **Project Structure**
-- **Docker**
-- **Development**
-- **Contributing**
-- **Security**
-- **License**
+</div>
 
-## Overview
+## 📋 Table of Contents
 
-Production‑ready API built with Bun, Elysia.js, Prisma, and PostgreSQL. Focused on clean architecture, strict TypeScript, and simple operability.
+- [✨ Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📋 Requirements](#-requirements)
+- [🚀 Getting Started](#-getting-started)
+- [⚙️ Environment Variables](#️-environment-variables)
+- [📡 API Overview](#-api-overview)
+- [📁 Project Structure](#-project-structure)
+- [🐳 Docker](#-docker)
+- [🔧 Development](#-development)
+- [🤝 Contributing](#-contributing)
+- [🔒 Security](#-security)
+- [📄 License](#-license)
 
-## Features
+## ✨ Features
 
-- **🔐 Auth**: JWT auth, register/login, current user
-- **👥 Users**: CRUD, role‑based access
-- **🏢 Organizations**: Multi‑tenant isolation
-- **🧩 Assignments & Candidates**: Create, assign, lifecycle management
-- **📝 Questions & Tests**: Multilingual question bank and delivery
-- **📄 Results**: PDF export and aggregations
-- **🩺 Health**: Readiness and liveness checks
+- **🔐 Authentication**: JWT-based auth with register/login endpoints
+- **👥 User Management**: CRUD operations with role-based access control
+- **🏢 Organizations**: Multi-tenant isolation and management
+- **🧩 Assignments & Candidates**: Create, assign, and manage candidate lifecycle
+- **📝 Questions & Tests**: Multilingual question bank with test delivery
+- **📄 Results**: PDF export and result aggregations
+- **🩺 Health Checks**: Readiness and liveness monitoring endpoints
 
-## Architecture
+## 🛠️ Tech Stack
 
 - **Runtime**: Bun
 - **Framework**: Elysia.js
 - **Database**: PostgreSQL
 - **ORM**: Prisma
-- **Auth**: JWT
-- **Logging**: Pino (structured)
+- **Authentication**: JWT
+- **Logging**: Pino (structured logging)
 
-## Requirements
+## 📋 Requirements
 
 - Bun 1.2.22+
 - PostgreSQL 14+
 
-## Getting Started
+## 🚀 Getting Started
 
-### Install
+1. **Install dependencies:**
 
-```bash
-bun install
-```
+   ```bash
+   bun install
+   ```
 
-### Configure environment
+2. **Configure environment:**
 
-```bash
-cp .env.example .env
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-### Database setup
+3. **Set up database:**
 
-```bash
-bunx prisma generate
-bunx prisma db push
-```
+   ```bash
+   bunx prisma generate
+   bunx prisma db push
+   ```
 
-### Run locally
+4. **Start development server:**
+   ```bash
+   bun run dev
+   ```
 
-```bash
-bun run dev
-```
+Server will start on `http://localhost:3000` with API prefix `/api/v1`.
 
-Default base URL: `http://localhost:3000`, API prefix: `/api/v1`.
-
-### Environment variables
+## ⚙️ Environment Variables
 
 ```env
+# Database
 DATABASE_URL="postgresql://user:password@localhost:5432/hrcs"
+
+# Authentication
 JWT_SECRET="replace-with-strong-secret"
+
+# Server
 CORS_ORIGIN="http://localhost:5173"
 NODE_ENV="development"
 
@@ -108,71 +102,86 @@ SMTP_PASS=""
 SMTP_SECURE=false
 ```
 
-## API Overview
+## 📡 API Overview
 
-- `POST /api/v1/auth/register`
-- `POST /api/v1/auth/login`
-- `GET  /api/v1/auth/me`
-- `GET  /api/v1/users` | `POST /api/v1/users` | `GET/PUT/DELETE /api/v1/users/:id`
-- `GET  /api/v1/organizations` | `POST /api/v1/organizations` | `GET/PUT/DELETE /api/v1/organizations/:id`
-- `GET  /api/v1/assignments` | `POST /api/v1/assignments` | `GET/PUT/DELETE /api/v1/assignments/:id`
-- `GET  /api/v1/questions` | `PUT /api/v1/questions/:id`
-- `GET  /api/v1/health`
+**Authentication:**
 
-Auth header for protected routes:
+- `POST /api/v1/auth/register` - Register new user
+- `POST /api/v1/auth/login` - User login
+- `GET /api/v1/auth/me` - Get current user
+
+**Users:**
+
+- `GET /api/v1/users` - List users
+- `POST /api/v1/users` - Create user
+- `GET/PUT/DELETE /api/v1/users/:id` - User operations
+
+**Organizations:**
+
+- `GET /api/v1/organizations` - List organizations
+- `POST /api/v1/organizations` - Create organization
+- `GET/PUT/DELETE /api/v1/organizations/:id` - Organization operations
+
+**Assignments:**
+
+- `GET /api/v1/assignments` - List assignments
+- `POST /api/v1/assignments` - Create assignment
+- `GET/PUT/DELETE /api/v1/assignments/:id` - Assignment operations
+
+**Questions & Health:**
+
+- `GET /api/v1/questions` - List questions
+- `PUT /api/v1/questions/:id` - Update question
+- `GET /api/v1/health` - Health check
+
+**Authentication header for protected routes:**
 
 ```
-Authorization: Bearer <jwt>
+Authorization: Bearer <jwt_token>
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
 ├── modules/
-│   ├── auth/
-│   ├── user/
-│   ├── organization/
-│   ├── assignment/
-│   ├── assignment-candidate/
-│   ├── question/
-│   ├── result/
-│   └── health/
-├── generated/        # Prisma client (generated)
-└── index.ts
+│   ├── auth/                    # Authentication & JWT
+│   ├── user/                    # User management
+│   ├── organization/            # Organization management
+│   ├── assignment/              # Assignment operations
+│   ├── assignment-candidate/    # Candidate assignments
+│   ├── question/               # Question bank
+│   ├── result/                 # Test results & PDF export
+│   ├── health/                 # Health checks
+│   └── helpers/                # Utilities (email, jwt, logger)
+├── generated/                  # Prisma client (auto-generated)
+└── index.ts                   # Application entry point
 ```
 
-## Docker
+## 🐳 Docker
 
 ```bash
+# Build image
 docker build -t hrcs-api .
+
+# Run container
 docker run -p 3000:3000 \
-  -e DATABASE_URL=... \
-  -e JWT_SECRET=... \
+  -e DATABASE_URL="postgresql://..." \
+  -e JWT_SECRET="your-secret" \
   hrcs-api
 ```
 
-## Development
+## 🔧 Development
 
-- `bun run dev` – start dev server with watch
-- `bun run build` – generate Prisma client and build
-- `bunx prisma migrate dev --name <name>` – schema changes
-- `bunx prisma studio` – inspect the DB
+- `bun run dev` – Start development server with hot reload
+- `bun run build` – Generate Prisma client and build project
+- `bunx prisma migrate dev --name <migration_name>` – Create and apply database migration
+- `bunx prisma studio` – Open Prisma Studio to inspect database
 
-## Contributing
+## 🔒 Security
 
-Contributions are welcome! Please:
+If you discover a security vulnerability, please email the maintainer privately rather than opening a public issue. We take security seriously and will respond promptly to legitimate reports.
 
-- **Fork** the repo and create a feature branch
-- **Commit** with clear messages
-- **Open a PR** with a concise description and context
+## 📄 License
 
-If adding/altering APIs, include examples or tests where practical.
-
-## Security
-
-If you discover a security vulnerability, please email the maintainer privately. Avoid opening public issues for vulnerabilities.
-
-## License
-
-MIT. See `LICENSE`.
+[MIT](LICENSE) - see the LICENSE file for details.
