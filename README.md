@@ -7,62 +7,99 @@
   <a href="https://www.postgresql.org"><img src="https://img.shields.io/badge/DB-PostgreSQL-316192?logo=postgresql&logoColor=fff" alt="PostgreSQL" /></a>
   <img src="https://img.shields.io/badge/TypeScript-Strict-blue" alt="TypeScript Strict" />
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT" />
+  <img src="https://img.shields.io/badge/Status-Active%20Development-success" alt="Project Status" />
 </p>
+
+<p align="center">
+  HR candidate screening REST API — users, organizations, assignments, tests, and results.
+</p>
+
+---
+
+## Table of Contents
+
+- **Overview**
+- **Features**
+- **Architecture**
+- **Requirements**
+- **Getting Started**
+  - Install
+  - Configure environment
+  - Database setup
+  - Run locally
+- **API Overview**
+- **Project Structure**
+- **Docker**
+- **Development**
+- **Contributing**
+- **Security**
+- **License**
 
 ## Overview
 
-Backend REST API for managing users, organizations, assignments, tests, and results for HR candidate screening.
+Production‑ready API built with Bun, Elysia.js, Prisma, and PostgreSQL. Focused on clean architecture, strict TypeScript, and simple operability.
 
 ## Features
 
-- **Auth**: JWT auth, register/login, profile
-- **Users**: CRUD, role‑based access
-- **Organizations**: Multi‑tenant isolation
-- **Assignments & Candidates**: Create, assign, manage lifecycle
-- **Questions & Tests**: Multilingual question bank and delivery
-- **Results**: PDF export and aggregation
-- **Health**: Readiness/liveness checks
+- **🔐 Auth**: JWT auth, register/login, current user
+- **👥 Users**: CRUD, role‑based access
+- **🏢 Organizations**: Multi‑tenant isolation
+- **🧩 Assignments & Candidates**: Create, assign, lifecycle management
+- **📝 Questions & Tests**: Multilingual question bank and delivery
+- **📄 Results**: PDF export and aggregations
+- **🩺 Health**: Readiness and liveness checks
 
-## Tech Stack
+## Architecture
 
 - **Runtime**: Bun
 - **Framework**: Elysia.js
 - **Database**: PostgreSQL
 - **ORM**: Prisma
 - **Auth**: JWT
-- **Logging**: Pino
+- **Logging**: Pino (structured)
 
-## Quick Start
-
-### Prerequisites
+## Requirements
 
 - Bun 1.2.22+
 - PostgreSQL 14+
 
-### Setup
+## Getting Started
+
+### Install
 
 ```bash
 bun install
-cp .env.example .env
+```
 
-# Prisma
+### Configure environment
+
+```bash
+cp .env.example .env
+```
+
+### Database setup
+
+```bash
 bunx prisma generate
 bunx prisma db push
+```
 
+### Run locally
 
-# Start dev server
+```bash
 bun run dev
 ```
 
 Default base URL: `http://localhost:3000`, API prefix: `/api/v1`.
 
-## Environment Variables
+### Environment variables
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/hrcs"
 JWT_SECRET="replace-with-strong-secret"
 CORS_ORIGIN="http://localhost:5173"
 NODE_ENV="development"
+
 # Email (optional)
 SMTP_HOST="localhost"
 SMTP_PORT=1025
@@ -71,7 +108,7 @@ SMTP_PASS=""
 SMTP_SECURE=false
 ```
 
-## API Outline
+## API Overview
 
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
@@ -87,11 +124,6 @@ Auth header for protected routes:
 ```
 Authorization: Bearer <jwt>
 ```
-
-## Scripts
-
-- `bun run dev` – Start dev server with watch
-- `bun run build` – Generate Prisma client and build binary
 
 ## Project Structure
 
@@ -112,8 +144,6 @@ src/
 
 ## Docker
 
-Build and run:
-
 ```bash
 docker build -t hrcs-api .
 docker run -p 3000:3000 \
@@ -122,11 +152,26 @@ docker run -p 3000:3000 \
   hrcs-api
 ```
 
-## Development Notes
+## Development
 
-- Use `bunx prisma migrate dev --name <name>` for schema changes
-- Use `bunx prisma studio` to inspect the DB
-- Logging is structured (Pino); configure level via env
+- `bun run dev` – start dev server with watch
+- `bun run build` – generate Prisma client and build
+- `bunx prisma migrate dev --name <name>` – schema changes
+- `bunx prisma studio` – inspect the DB
+
+## Contributing
+
+Contributions are welcome! Please:
+
+- **Fork** the repo and create a feature branch
+- **Commit** with clear messages
+- **Open a PR** with a concise description and context
+
+If adding/altering APIs, include examples or tests where practical.
+
+## Security
+
+If you discover a security vulnerability, please email the maintainer privately. Avoid opening public issues for vulnerabilities.
 
 ## License
 
